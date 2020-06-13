@@ -1,5 +1,5 @@
-import produce, { Draft } from "immer";
-import { useState, useReducer, useCallback, useMemo, Dispatch } from "react";
+import produce, { Draft } from 'immer';
+import { useState, useReducer, useCallback, useMemo, Dispatch } from 'react';
 
 export type Reducer<S = any, A = any> = (
   draftState: Draft<S>,
@@ -16,9 +16,9 @@ export function useImmer(initialValue: any) {
   const [val, updateValue] = useState(initialValue);
   return [
     val,
-    useCallback(updater => {
+    useCallback((updater) => {
       updateValue(produce(updater));
-    }, [])
+    }, []),
   ];
 }
 
@@ -31,3 +31,8 @@ export function useImmerReducer(reducer, initialState, initialAction) {
   const cachedReducer = useMemo(() => produce(reducer), [reducer]);
   return useReducer(cachedReducer, initialState as any, initialAction);
 }
+console.log('hi');
+
+export type Update<S> = (f: (draft: Draft<S>) => void | S) => void;
+
+export type ImmerHook1<S> = [S, Update<S>];
