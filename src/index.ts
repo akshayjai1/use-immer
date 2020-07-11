@@ -5,12 +5,11 @@ export type Reducer<S = any, A = any> = (
   draftState: Draft<S>,
   action: A
 ) => void | S;
+export type Updater<S> = (f: (draft: Draft<S>) => void | S) => void;
 
-export type ImmerHook<S> = [S, (f: (draft: Draft<S>) => void | S) => void];
+export type ImmerHook<S> = [S, Updater<S>];
 
-export function useImmer<S = any>(
-  initialValue: S | (() => S)
-): [S, (f: (draft: Draft<S>) => void | S) => void];
+export function useImmer<S = any>(initialValue: S | (() => S)): [S, Updater<S>];
 
 export function useImmer(initialValue: any) {
   const [val, updateValue] = useState(initialValue);
@@ -32,7 +31,3 @@ export function useImmerReducer(reducer, initialState, initialAction) {
   return useReducer(cachedReducer, initialState as any, initialAction);
 }
 console.log('hi');
-
-export type Update<S> = (f: (draft: Draft<S>) => void | S) => void;
-
-export type ImmerHook1<S> = [S, Update<S>];
